@@ -9,6 +9,10 @@ const submissionSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    imgLink:{
+      type: String,
+      default: 'https://via.placeholder.com/150',
+    },
     status:{
       type: String,
       enum: ['pending','approved'],
