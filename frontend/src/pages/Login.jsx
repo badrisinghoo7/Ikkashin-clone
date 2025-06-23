@@ -26,8 +26,8 @@ export default function Login() {
     try {
       const endpoint =
         activeForm === "login"
-          ? "https://ikkashin-lms.onrender.com/api/users/login"
-          : "https://ikkashin-lms.onrender.com/api/users/register";
+          ? "https://ikkashin-clone.onrender.com/api/users/login"
+          : "https://ikkashin-clone.onrender.com/api/users/register";
       const payload =
         activeForm === "login"
           ? {

@@ -45,7 +45,7 @@ export default function Navbar() {
   useEffect(() => {
     if (activeItem === "Submission") {
       setSubLoading(true);
-      fetch("https://ikkashin-lms.onrender.com/api/submissions/all")
+      fetch("https://ikkashin-clone.onrender.com/api/submissions/all")
         .then((res) => res.json())
         .then((data) => setSubmissions(Array.isArray(data) ? data : []))
         .catch(() => setSubmissions([]))
