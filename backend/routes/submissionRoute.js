@@ -84,3 +84,6 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ message: 'Error fetching submissions', error: err.message });
   }
 });
+
+
+export default router;
