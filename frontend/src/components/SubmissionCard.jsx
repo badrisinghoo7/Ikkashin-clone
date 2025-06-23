@@ -16,6 +16,18 @@ export default function SubmissionCard({ submission, page, index, totalPages }) 
         <div className="font-bold text-blue-600">Title: {submission.title}</div>
         <div className="text-blue-500 text-sm">{submission.description}</div>
       </div>
+      {/* Status Badge */}
+      <div className="mb-2">
+        <span
+          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+            submission.status === "approved"
+              ? "bg-green-100 text-green-700"
+              : "bg-yellow-100 text-yellow-700"
+          }`}
+        >
+          {submission.status === "approved" ? "Approved" : "Pending"}
+        </span>
+      </div>
       {submission.fileUrl && (
         <a
           href={submission.fileUrl}

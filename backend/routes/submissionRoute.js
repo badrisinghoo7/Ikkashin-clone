@@ -65,12 +65,19 @@ router.get('/all', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 2;   
+    const status = req.query.status; // Get status from query
 
     const skip = (page - 1) * limit;
 
+    // Build filter object
+    const filter = {};
+    if (status && status !== "all") {
+      filter.status = status;
+    }
+
     const [submissions, total] = await Promise.all([
-      Submission.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-      Submission.countDocuments()
+      Submission.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Submission.countDocuments(filter)
     ]);
 
     res.status(200).json({

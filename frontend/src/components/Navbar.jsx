@@ -11,6 +11,7 @@ export default function Navbar() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all"); // NEW
   const itemsPerPage = 2;
 
   const navigate = useNavigate();
@@ -23,7 +24,6 @@ export default function Navbar() {
 
   const menuItems = [
     { name: "Home", icon: <Home size={20} />, color: "" },
-    // Only show Assignment if token exists (user is logged in)
     ...(token
       ? [
           {
@@ -43,11 +43,19 @@ export default function Navbar() {
       : null,
   ].filter(Boolean);
 
+  // Reset page to 1 when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter]);
+
   useEffect(() => {
     if (activeItem === "Submission") {
       setSubLoading(true);
-      fetch(`https://ikkashin-clone.onrender.com/api/submissions/all?page=${page}&limit=${itemsPerPage}`)
-      // fetch(`https://ikkashin-clone.onrender.com/api/submissions/all?page=1&limit=2`)
+      let url = `https://ikkashin-clone.onrender.com/api/submissions/all?page=${page}&limit=${itemsPerPage}`;
+      if (statusFilter !== "all") {
+        url += `&status=${statusFilter}`;
+      }
+      fetch(url)
         .then((res) => res.json())
         .then((data) => {
           setSubmissions(Array.isArray(data.submissions) ? data.submissions : []);
@@ -59,7 +67,7 @@ export default function Navbar() {
         })
         .finally(() => setSubLoading(false));
     }
-  }, [activeItem, page]);
+  }, [activeItem, page, statusFilter]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-white">
@@ -273,8 +281,6 @@ export default function Navbar() {
                   </button>
                 </div>
               </div>
-
-
             )}
             {activeItem === "Assignment" && (
               <AssignmentSubmissionForm />
@@ -282,6 +288,27 @@ export default function Navbar() {
             {activeItem === "Submission" && (
               <div>
                 <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">All Submissions</h2>
+                {/* Status Filter Buttons */}
+                <div className="flex justify-center gap-2 mb-6">
+                  <button
+                    className={`px-4 py-2 rounded-full font-semibold ${statusFilter === "all" ? "bg-blue-600 text-white" : "bg-blue-100 text-blue-700"}`}
+                    onClick={() => setStatusFilter("all")}
+                  >
+                    All
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full font-semibold ${statusFilter === "pending" ? "bg-yellow-400 text-white" : "bg-yellow-100 text-yellow-700"}`}
+                    onClick={() => setStatusFilter("pending")}
+                  >
+                    Pending
+                  </button>
+                  <button
+                    className={`px-4 py-2 rounded-full font-semibold ${statusFilter === "approved" ? "bg-green-600 text-white" : "bg-green-100 text-green-700"}`}
+                    onClick={() => setStatusFilter("approved")}
+                  >
+                    Approved
+                  </button>
+                </div>
                 {subLoading ? (
                   <div className="flex justify-center items-center py-12">
                     <svg className="animate-spin h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24">
@@ -299,9 +326,8 @@ export default function Navbar() {
                           key={submission._id}
                           submission={submission}
                           page={page}
-                          index={idx} 
-                          totalPages={totalPages} 
-                        
+                          index={idx}
+                          totalPages={totalPages}
                         />
                       ))}
                     </div>

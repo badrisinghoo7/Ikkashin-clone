@@ -6,7 +6,8 @@ export default function AssignmentSubmissionForm() {
     description: '',
     studentName: '',
     studentId: '',
-    fileUrl: null
+    fileUrl: null,
+    status: 'pending', // default value
   });
 
   const [loading, setLoading] = useState(false);
@@ -83,6 +84,7 @@ export default function AssignmentSubmissionForm() {
       formDataToSend.append('studentName', fields.studentName);
       formDataToSend.append('studentId', fields.studentId);
       formDataToSend.append('submittedBy', userId);
+      formDataToSend.append('status', fields.status); // send status
       if (fields.fileUrl) {
         formDataToSend.append('fileUrl', fields.fileUrl);
       }
@@ -104,7 +106,8 @@ export default function AssignmentSubmissionForm() {
         description: '',
         studentName: '',
         studentId: '',
-        fileUrl: null
+        fileUrl: null,
+        status: 'pending',
       });
     } catch (error) {
       setAlert({ type: 'error', text: error.message });
@@ -190,6 +193,22 @@ export default function AssignmentSubmissionForm() {
                 placeholder="Your student ID"
               />
             </div>
+          </div>
+          {/* Status Field */}
+          <div>
+            <label className="block text-blue-700 font-semibold mb-2 text-base">
+              Status
+            </label>
+            <select
+              name="status"
+              value={fields.status}
+              onChange={handleFieldChange}
+              required
+              className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
+            >
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+            </select>
           </div>
           <div>
             <label className="block text-blue-700 font-semibold mb-2 text-base">
