@@ -62,11 +62,27 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
 // ✅ GET: All Submissions
 router.get('/all', async (req, res) => {
   try {
-    const submissions = await Submission.find().sort({ createdAt: -1 });
-    res.status(200).json({submissions, length: submissions.length});
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10;   
+
+    const skip = (page - 1) * limit;
+
+    const [submissions, total] = await Promise.all([
+      Submission.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Submission.countDocuments()
+    ]);
+
+    res.status(200).json({
+      submissions,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalSubmissions: total
+    });
+
   } catch (err) {
     res.status(500).json({ message: 'Error fetching submissions', error: err.message });
   }
 });
+
 
 export default router;
