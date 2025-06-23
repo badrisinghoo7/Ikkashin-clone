@@ -63,7 +63,7 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
 router.get('/all', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; 
-    const limit = parseInt(req.query.limit) || 10;   
+    const limit = parseInt(req.query.limit) || 2;   
 
     const skip = (page - 1) * limit;
 

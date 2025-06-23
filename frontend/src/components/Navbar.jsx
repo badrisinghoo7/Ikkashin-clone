@@ -9,8 +9,9 @@ export default function Navbar() {
   const [submissions, setSubmissions] = useState([]);
   const [subLoading, setSubLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const itemsPerPage = 4;
+  const itemsPerPage = 2;
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -45,21 +46,20 @@ export default function Navbar() {
   useEffect(() => {
     if (activeItem === "Submission") {
       setSubLoading(true);
-      fetch("https://ikkashin-clone.onrender.com/api/submissions/all")
+      fetch(`https://ikkashin-clone.onrender.com/api/submissions/all?page=${page}&limit=${itemsPerPage}`)
+      // fetch(`https://ikkashin-clone.onrender.com/api/submissions/all?page=1&limit=2`)
         .then((res) => res.json())
-        .then((data) => setSubmissions(Array.isArray(data) ? data : []))
-        .catch(() => setSubmissions([]))
+        .then((data) => {
+          setSubmissions(Array.isArray(data.submissions) ? data.submissions : []);
+          setTotalPages(data.totalPages || 1);
+        })
+        .catch(() => {
+          setSubmissions([]);
+          setTotalPages(1);
+        })
         .finally(() => setSubLoading(false));
-      setPage(1);
     }
-  }, [activeItem]);
-
-  // Pagination logic
-  const totalPages = Math.ceil(submissions.length / itemsPerPage);
-  const paginated = submissions.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  }, [activeItem, page]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-white">
@@ -294,13 +294,14 @@ export default function Navbar() {
                 ) : (
                   <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {paginated.map((submission) => (
+                      {submissions.map((submission, idx) => (
                         <SubmissionCard
                           key={submission._id}
-                          submission={{
-                            ...submission,
-                            attachmentUrl: submission.attachment // adjust if needed
-                          }}
+                          submission={submission}
+                          page={page}
+                          index={idx} 
+                          totalPages={totalPages} 
+                        
                         />
                       ))}
                     </div>
