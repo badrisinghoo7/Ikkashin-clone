@@ -1,7 +1,7 @@
 import React from "react";
 export default function SubmissionCard({ submission, page, index, totalPages }) {
   // You can now use page, index, totalPages as needed
-  console.log("submission=>>>>",submission)
+  console.log("submission=>>>>",submission.imgLink)
   return (
     <div className="bg-white border border-blue-200 rounded-2xl shadow p-6 flex flex-col gap-2 hover:shadow-lg transition">
       <div className="flex items-center gap-3 mb-2">

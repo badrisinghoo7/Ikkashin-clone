@@ -11,7 +11,7 @@ const submissionSchema = new mongoose.Schema(
     },
     imgLink:{
       type: String,
-      default: 'https://via.placeholder.com/150',
+      required: [true, 'Image link is required']
     },
     status:{
       type: String,
