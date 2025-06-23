@@ -1,11 +1,20 @@
 import React from "react";
 export default function SubmissionCard({ submission, page, index, totalPages }) {
   // You can now use page, index, totalPages as needed
+  console.log("submission=>>>>",submission)
   return (
     <div className="bg-white border border-blue-200 rounded-2xl shadow p-6 flex flex-col gap-2 hover:shadow-lg transition">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl">
-          {submission.studentName?.[0]?.toUpperCase() || "S"}
+        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl overflow-hidden">
+          {submission.imgLink ? (
+            <img
+              src={submission.imgLink}
+              alt={submission.studentName}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          ) : (
+            submission.studentName?.[0]?.toUpperCase() || "S"
+          )}
         </div>
         <div>
           <div className="font-semibold text-blue-700 text-lg">{submission.studentName}</div>

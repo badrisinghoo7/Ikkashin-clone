@@ -18,7 +18,7 @@ const upload = multer({ storage });
 
 router.post('/submit', upload.single('fileUrl'), async (req, res) => {
   try {
-    const { title, description, studentName, studentId, submittedBy, status } = req.body;
+    const { title, description, studentName, studentId, submittedBy, status,imgLink } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: 'File is required' });
@@ -39,6 +39,7 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
           status,
           studentId,
           submittedBy,
+          imgLink,
         });
 
         await submission.save();

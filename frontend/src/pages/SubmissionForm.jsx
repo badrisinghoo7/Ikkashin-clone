@@ -7,7 +7,8 @@ export default function AssignmentSubmissionForm() {
     studentName: '',
     studentId: '',
     fileUrl: null,
-    status: 'pending', // default value
+    status: 'pending',
+    imgLink: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -84,7 +85,8 @@ export default function AssignmentSubmissionForm() {
       formDataToSend.append('studentName', fields.studentName);
       formDataToSend.append('studentId', fields.studentId);
       formDataToSend.append('submittedBy', userId);
-      formDataToSend.append('status', fields.status); // send status
+      formDataToSend.append('status', fields.status);
+      formDataToSend.append('imgLink', fields.imgLink); // <-- Send imgLink
       if (fields.fileUrl) {
         formDataToSend.append('fileUrl', fields.fileUrl);
       }
@@ -108,6 +110,7 @@ export default function AssignmentSubmissionForm() {
         studentId: '',
         fileUrl: null,
         status: 'pending',
+        imgLink: '', // reset imgLink
       });
     } catch (error) {
       setAlert({ type: 'error', text: error.message });
@@ -209,6 +212,20 @@ export default function AssignmentSubmissionForm() {
               <option value="pending">Pending</option>
               <option value="approved">Approved</option>
             </select>
+          </div>
+          {/* Img Link Field */}
+          <div>
+            <label className="block text-blue-700 font-semibold mb-2 text-base">
+              Image Link (optional)
+            </label>
+            <input
+              type="text"
+              name="imgLink"
+              value={fields.imgLink}
+              onChange={handleFieldChange}
+              className="w-full px-4 py-3 bg-white border border-blue-200 rounded-lg text-blue-900 placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
+              placeholder="Paste image URL here"
+            />
           </div>
           <div>
             <label className="block text-blue-700 font-semibold mb-2 text-base">
