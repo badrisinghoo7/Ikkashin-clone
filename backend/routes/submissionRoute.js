@@ -7,27 +7,23 @@ import dotenv from 'dotenv';
 dotenv.config();
 const router = express.Router();
 
-// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Multer setup (store file temporarily in memory)
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// ✅ POST: Submit Assignment
 router.post('/submit', upload.single('fileUrl'), async (req, res) => {
   try {
-    const { title, description, studentName, studentId, submittedBy,status } = req.body;
+    const { title, description, studentName, studentId, submittedBy, status } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: 'File is required' });
     }
 
-    // Upload to Cloudinary
     const result = await cloudinary.uploader.upload_stream(
       { resource_type: 'auto', folder: 'submissions' },
       async (error, result) => {
@@ -35,7 +31,6 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
           return res.status(500).json({ message: 'Cloudinary upload failed', error });
         }
 
-        // Save to MongoDB
         const submission = new Submission({
           title,
           description,
@@ -52,7 +47,6 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
       }
     );
 
-    // Pipe buffer to Cloudinary stream
     const stream = result;
     stream.end(req.file.buffer);
   } catch (err) {
@@ -60,16 +54,14 @@ router.post('/submit', upload.single('fileUrl'), async (req, res) => {
   }
 });
 
-// ✅ GET: All Submissions
 router.get('/all', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; 
-    const limit = parseInt(req.query.limit) || 2;   
-    const status = req.query.status; // Get status from query
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 2;
+    const status = req.query.status;
 
     const skip = (page - 1) * limit;
 
-    // Build filter object
     const filter = {};
     if (status && status !== "all") {
       filter.status = status;
@@ -91,6 +83,3 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ message: 'Error fetching submissions', error: err.message });
   }
 });
-
-
-export default router;
