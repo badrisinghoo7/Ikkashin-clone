@@ -9,6 +9,11 @@ const submissionSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    status:{
+      type: String,
+      enum: ['pending','approved'],
+      default: 'pending',
+    },
     fileUrl: {
       type: String,
       required: [true, 'Attachment is required'],
