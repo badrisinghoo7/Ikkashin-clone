@@ -17,7 +17,7 @@ export default function AssignmentSubmissionForm() {
   const userId = JSON.parse(localStorage.getItem('userId')); 
   // console.log("userId is here ====>",userId);
 
-  // Handle input changes
+
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
     setFields(prev => ({
@@ -26,7 +26,6 @@ export default function AssignmentSubmissionForm() {
     }));
   };
 
-  // Handle file input
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     console.log("file is here ====>",file);
@@ -42,7 +41,6 @@ export default function AssignmentSubmissionForm() {
     }
   };
 
-  // Drag and drop handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -72,7 +70,6 @@ export default function AssignmentSubmissionForm() {
     }
   };
 
-  // Submit handler
   const handleAssignmentSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -86,7 +83,7 @@ export default function AssignmentSubmissionForm() {
       formDataToSend.append('studentId', fields.studentId);
       formDataToSend.append('submittedBy', userId);
       formDataToSend.append('status', fields.status);
-      formDataToSend.append('imgLink', fields.imgLink); // <-- Send imgLink
+      formDataToSend.append('imgLink', fields.imgLink);
       if (fields.fileUrl) {
         formDataToSend.append('fileUrl', fields.fileUrl);
       }
@@ -110,7 +107,7 @@ export default function AssignmentSubmissionForm() {
         studentId: '',
         fileUrl: null,
         status: 'pending',
-        imgLink: '', // reset imgLink
+        imgLink: '',
       });
     } catch (error) {
       setAlert({ type: 'error', text: error.message });
@@ -122,10 +119,9 @@ export default function AssignmentSubmissionForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-xl mx-auto bg-white border border-blue-200 rounded-3xl shadow-lg p-0 overflow-hidden">
-        {/* Header */}
         <div className="bg-blue-700 py-8 px-6 flex flex-col items-center">
           <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow">
-            {/* Unique icon: Paper airplane (SVG) */}
+
             <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
               <path d="M3 20L21 12L3 4V10L15 12L3 14V20Z" fill="#2563eb"/>
             </svg>
@@ -133,7 +129,6 @@ export default function AssignmentSubmissionForm() {
           <h1 className="text-3xl font-bold text-white mb-1 tracking-wide">Assignment Upload</h1>
           <p className="text-blue-100 text-base">Fast, simple, and secure submission</p>
         </div>
-        {/* Form */}
         <form
           className="p-8 space-y-6"
           onSubmit={handleAssignmentSubmit}
@@ -197,7 +192,7 @@ export default function AssignmentSubmissionForm() {
               />
             </div>
           </div>
-          {/* Status Field */}
+          
           <div>
             <label className="block text-blue-700 font-semibold mb-2 text-base">
               Status
@@ -213,7 +208,7 @@ export default function AssignmentSubmissionForm() {
               <option value="approved">Approved</option>
             </select>
           </div>
-          {/* Img Link Field */}
+        
           <div>
             <label className="block text-blue-700 font-semibold mb-2 text-base">
               Image Link (optional)
@@ -249,7 +244,7 @@ export default function AssignmentSubmissionForm() {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
               <div className="flex flex-col items-center">
-                {/* Unique icon: Upload arrow (SVG) */}
+              
                 <div className="w-10 h-10 mb-2 flex items-center justify-center">
                   <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
                     <path d="M12 16V4M12 4L7 9M12 4L17 9" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

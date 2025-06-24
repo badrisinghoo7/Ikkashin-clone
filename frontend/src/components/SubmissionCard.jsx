@@ -1,6 +1,6 @@
 import React from "react";
 export default function SubmissionCard({ submission, page, index, totalPages }) {
-  // You can now use page, index, totalPages as needed
+
   console.log("submission=>>>>",submission.imgLink)
   return (
     <div className="bg-white border border-blue-200 rounded-2xl shadow p-6 flex flex-col gap-2 hover:shadow-lg transition">
@@ -25,7 +25,6 @@ export default function SubmissionCard({ submission, page, index, totalPages }) 
         <div className="font-bold text-blue-600">Title: {submission.title}</div>
         <div className="text-blue-500 text-sm">{submission.description}</div>
       </div>
-      {/* Status Badge */}
       <div className="mb-2">
         <span
           className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
